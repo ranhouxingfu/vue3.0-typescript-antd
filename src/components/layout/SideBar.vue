@@ -44,7 +44,7 @@ import { reactive, toRefs, computed } from "vue";
 //首先的从vue-router中导入useRouter
 import { useRouter, useRoute } from "vue-router";
 interface RouteInfo {
-  path: string;
+  routeName: string;
   name: string;
 }
 export default {
@@ -63,29 +63,29 @@ export default {
           children: [
             {
               name: "销售报表",
-              path: "/report",
+              routeName: "Report",
               icon: "iconxiaoshou",
             },
           ],
         },
         {
           name: "订单管理",
-          path: "/orders",
+          routeName: "Orders",
           icon: "iconorder",
         },
         {
           name: "商品管理",
-          path: "/goods",
+          routeName: "Goods",
           icon: "icongoods",
         },
         {
           name: "关于我们",
-          path: "/about",
+          routeName: "About",
           icon: "iconabout",
         },
         {
           name: "系统设置",
-          path: "/system",
+          routeName: "System",
           icon: "iconsetting",
         },
       ],
@@ -96,7 +96,7 @@ export default {
       ),
     });
     const goPage = (item: RouteInfo) => {
-      router.push({ path: item.path });
+      router.push({ name: item.routeName });
     };
     return {
       ...toRefs(state),

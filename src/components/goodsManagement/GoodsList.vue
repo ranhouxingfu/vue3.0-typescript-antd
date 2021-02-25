@@ -34,6 +34,7 @@
       @transformCellText="transformCellText"
     >
       <template #operation="{ record }">
+        <a-button type="link" @click="scanDetail(record)">详情</a-button>
         <a-button type="link" @click="openDialog(record)">编辑</a-button>
         <a-button
           type="link"
@@ -51,6 +52,7 @@
 </template>
 <script lang="ts">
 import { toRefs, reactive, computed, onMounted, inject } from "vue";
+import { useRouter } from 'vue-router';
 import { useStore } from "vuex";
 import { message } from "ant-design-vue";
 import Table from "@/components/common/Table.vue";
@@ -65,6 +67,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
     const state = reactive({
       visible: false,
       search: {
@@ -112,7 +115,7 @@ export default {
           title: "操作",
           key: "action",
           fixed: "right",
-          width: "200",
+          width: "250",
           slots: { customRender: "action" },
         },
       ],
@@ -146,6 +149,9 @@ export default {
     const transformCellText = (cell: object) => {
       console.log("cell", cell);
     };
+    const scanDetail = () => {
+      router.push({name: 'goodsDetail'});
+    }
     return {
       ...toRefs(state),
       labelCol: { span: 8 },
@@ -153,6 +159,7 @@ export default {
       goods,
       openDialog,
       deleteOne,
+      scanDetail,
       transformCellText,
     };
   },

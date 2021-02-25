@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LazyLoad from '@/helpers/lazyLoad';
+import lazyLoad from '@/helpers/lazyLoad';
 const routes = [
   {
     path: '/',
@@ -27,7 +28,16 @@ const routes = [
     component: LazyLoad('GoodsManagement'),
     meta: {
       title: '商品管理'
-    }
+    },
+    children: []
+  },
+  {
+    path: '/goods/detail',
+    name: 'goodsDetail',
+    component: lazyLoad('GoodsDetail'),
+    meta: {
+      title: '商品详情'
+    },
   },
   {
     path: '/orders',
