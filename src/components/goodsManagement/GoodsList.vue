@@ -28,7 +28,11 @@
         </div>
       </a-form-item>
     </a-form>
-    <Table :data="goods" :columns="columns" @transformCellText="transformCellText">
+    <Table
+      :data="goods"
+      :columns="columns"
+      @transformCellText="transformCellText"
+    >
       <template #operation="{ record }">
         <a-button type="link" @click="openDialog(record)">编辑</a-button>
         <a-button
@@ -46,13 +50,13 @@
   ></goods-dialog>
 </template>
 <script lang="ts">
-import { toRefs, reactive, computed, onMounted } from "vue";
+import { toRefs, reactive, computed, onMounted, inject } from "vue";
 import { useStore } from "vuex";
 import { message } from "ant-design-vue";
 import Table from "@/components/common/Table.vue";
-import { warningConfirm } from "@/global/warningConfirm";
 import { getGoodsTypes } from "@/api/goodsManagement";
 import GoodsDialog from "@/components/goodsManagement/GoodsDialog.vue";
+import { WARNING_CONFIRM } from "@/symbol";
 export default {
   name: "goodsManagement",
   components: {
@@ -68,59 +72,64 @@ export default {
         type: "",
       },
       goodsTypes: [],
-      columns:  [
+      columns: [
         {
           title: "商品编号",
-          key: 'code',
+          key: "code",
           dataIndex: "code",
         },
         {
           title: "商品名称",
-          key: 'name',
+          key: "name",
           dataIndex: "name",
         },
         {
           title: "商品库存",
-          key: 'stock',
+          key: "stock",
           dataIndex: "stock",
         },
         {
           title: "商品单价",
-          key: 'perPrice',
+          key: "perPrice",
           dataIndex: "perPrice",
         },
         {
           title: "商品等级",
-          key: 'start',
+          key: "start",
           dataIndex: "star",
         },
         {
           title: "商品描述",
-          key: 'desc',
+          key: "desc",
           dataIndex: "desc",
         },
         {
           title: "商品产地",
-          key: 'address',
+          key: "address",
           dataIndex: "address",
         },
         {
           title: "操作",
           key: "action",
-          fixed: 'right',
-          width: '200',
+          fixed: "right",
+          width: "200",
           slots: { customRender: "action" },
         },
-      ]
+      ],
     });
     const openDialog = () => {
       state.visible = true;
     };
+    const $warningConfirm:
+      | ((title?: string, content?: string) => any)
+      | undefined = inject(WARNING_CONFIRM);
     const deleteOne = () => {
-      warningConfirm("提示", "该商品删除后将无法恢复，确认删除？")
-        .then(() => {
-          message.success("删除成功");
-        });
+      $warningConfirm &&
+        $warningConfirm("提示", "该商品删除后将无法恢复，确认删除？").then(
+          () => {
+            message.success("删除成功");
+          }
+        );
     };
     // vuex,获取商品列表数据
     const goods = computed(() => {
@@ -128,14 +137,14 @@ export default {
     });
     onMounted(async () => {
       console.log("进入onMounted周期");
-      store.dispatch('getGoods', state.search);
+      store.dispatch("getGoods", state.search);
       getGoodsTypes().then((res: any) => {
         state.goodsTypes = res;
         console.log(state.goodsTypes);
       });
     });
     const transformCellText = (cell: object) => {
-      console.log('cell', cell);
+      console.log("cell", cell);
     };
     return {
       ...toRefs(state),
@@ -144,7 +153,7 @@ export default {
       goods,
       openDialog,
       deleteOne,
-      transformCellText
+      transformCellText,
     };
   },
 };
