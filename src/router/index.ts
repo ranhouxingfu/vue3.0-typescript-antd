@@ -1,19 +1,57 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
-
-const routes: Array<RouteRecordRaw> = [
+import { createRouter, createWebHistory } from 'vue-router';
+import LazyLoad from '@/helpers/lazyLoad';
+const routes = [
   {
     path: '/',
+    redirect: '/about',
+  },
+  {
+    path: '/home',
     name: 'Home',
-    component: Home
+    component: LazyLoad('Home'),
+    meta: {
+      title: '首页'
+    }
   },
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: LazyLoad('About'),
+    meta: {
+      title: '关于我们'
+    }
+  },
+  {
+    path: '/goods',
+    name: 'Goods',
+    component: LazyLoad('GoodsManagement'),
+    meta: {
+      title: '商品管理'
+    }
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: LazyLoad('OrdersManagement'),
+    meta: {
+      title: '订单管理'
+    }
+  },
+  {
+    path: '/report',
+    name: 'Report',
+    component: LazyLoad('ReportManagement'),
+    meta: {
+      title: '销售报表'
+    }
+  },
+  {
+    path: '/system',
+    name: 'System',
+    component: LazyLoad('SystemSet'),
+    meta: {
+      title: '系统设置'
+    }
   }
 ]
 
