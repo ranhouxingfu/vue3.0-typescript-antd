@@ -40,30 +40,28 @@ http.interceptors.response.use(
   (response) => {
     nprogress.done();
     removePending(response.config);
-    if (!response.data.status) {
-      switch (response.data.code) {
-        case '401':
-          return notification.error({
-            message: '错误',
-            description: response.data.message || '未知异常！',
-            duration: 3,
-          });
-        case '404':
-          return notification.error({
-            message: '错误',
-            description: response.data.message || '未知异常！',
-            duration: 3,
-          });
-        case '500':
-          return notification.error({
-            message: '错误',
-            description: response.data.message || '服务器连接错误！',
-            duration: 3,
-          });
-        default:
-      }
+    if (response.data.status) response.data;
+    switch (response.data.code) {
+      case '401':
+        return notification.error({
+          message: '错误',
+          description: response.data.message || '未知异常！',
+          duration: 3,
+        });
+      case '404':
+        return notification.error({
+          message: '错误',
+          description: response.data.message || '未知异常！',
+          duration: 3,
+        });
+      case '500':
+        return notification.error({
+          message: '错误',
+          description: response.data.message || '服务器连接错误！',
+          duration: 3,
+        });
+      default:
     }
-    return response.data;
   },
   (error) => {
     const isCancel = error && !error.message;
